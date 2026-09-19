@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI4I Telemetry — Sistem Prediksi Pemeliharaan Mesin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app-wrapper">
+
+    <!-- MASTHEAD: Swiss Architectural Grid Header -->
+    <header class="masthead-grid">
+      <div class="masthead-cell">
+        <span class="system-index">SYS.01 // TELEMETRY</span>
+      </div>
+
+      <div class="masthead-title-group">
+        <h1 class="masthead-title">Sistem Pemantauan Integritas Mesin</h1>
+        <div class="masthead-specs">
+          STANDARD: AI4I 2020 INDUSTRIAL DATASET &nbsp;|&nbsp;
+          CLASSIFIER: XGBOOST (7-FEATURES) &nbsp;|&nbsp;
+          SCALER: STANDARD_SCALER
+        </div>
+      </div>
+
+      <div class="masthead-status-cell">
+        <div id="apiBadge" class="status-indicator-tag">
+          <span class="status-dot"></span>
+          <span id="apiStatusText">API: ONLINE [127.0.0.1:8000]</span>
+        </div>
+        <div class="mono" style="font-size: 10px; color: var(--zinc-500); margin-top: 3px;">
+          INFERENCE ENGINE: ACTIVE
+        </div>
+      </div>
+    </header>
+
+    <!-- PRESET SELECTOR STRIP: Modular Segmented Matrix -->
+    <nav class="preset-matrix" aria-label="Preset Uji Laboratorium">
+      <div class="preset-matrix-label">
+        <span>Matriks Uji:</span>
+      </div>
+      <button type="button" class="preset-btn active" data-preset="nominal">
+        <span class="preset-num">[01]</span> BASELINE (NOMINAL)
+      </button>
+      <button type="button" class="preset-btn" data-preset="hdf">
+        <span class="preset-num">[02]</span> OVERHEATING [HDF]
+      </button>
+      <button type="button" class="preset-btn" data-preset="pwf">
+        <span class="preset-num">[03]</span> POWER OVERLOAD [PWF]
+      </button>
+      <button type="button" class="preset-btn" data-preset="twf">
+        <span class="preset-num">[04]</span> TOOL WEAR CRITICAL [TWF]
+      </button>
+    </nav>
+
+    <!-- CORE WORKSPACE GRID: Left Input Matrix / Right Diagnostic Engine -->
+    <main class="core-grid">
+
+      <!-- LEFT COLUMN: SENSOR INPUT MATRIX -->
+      <section class="grid-column-left">
+        <form id="predictionForm" autocomplete="off">
+
+          <!-- Section A: Sensor Matrix -->
+          <div class="section-marker">
+            <div>
+              <span class="section-code">SEC.A</span>
+              <span class="section-title">Matriks Pengukuran Sensor Fisik</span>
+            </div>
+            <span class="section-tag">6 FITUR INPUT</span>
+          </div>
+
+          <div class="param-table">
+
+            <!-- Row 1: Type & Tool Wear -->
+            <div class="param-row">
+              <div class="param-cell">
+                <div class="param-label-row">
+                  <label for="machine_type" class="param-label">Tipe Kualitas Produk</label>
+                  <span class="param-unit">[TYPE]</span>
+                </div>
+                <div class="param-input-box">
+                  <select id="machine_type" required>
+                    <option value="L" selected>L (Low - 50% Volume)</option>
+                    <option value="M">M (Medium - 30% Volume)</option>
+                    <option value="H">H (High - 20% Volume)</option>
+                  </select>
+                </div>
+                <div class="param-desc">Kategori varian material spindel</div>
+              </div>
+
+              <div class="param-cell">
+                <div class="param-label-row">
+                  <label for="tool_wear" class="param-label">Keausan Pahat (Tool Wear)</label>
+                  <span class="param-unit">[MIN]</span>
+                </div>
+                <div class="param-input-box">
+                  <input type="number" id="tool_wear" step="any" min="0" max="350" value="105" required />
+                  <span class="param-affix">menit</span>
+                </div>
+                <div class="param-desc">Akumulasi durasi operasional pahat</div>
+              </div>
+            </div>
+
+            <!-- Row 2: Temperatures -->
+            <div class="param-row">
+              <div class="param-cell">
+                <div class="param-label-row">
+                  <label for="air_temperature" class="param-label">Suhu Udara Sekitar</label>
+                  <span class="param-unit">[KELVIN]</span>
+                </div>
+                <div class="param-input-box">
+                  <input type="number" id="air_temperature" step="any" min="250" max="350" value="298.5" required />
+                  <span class="param-affix">K</span>
+                </div>
+                <div class="param-desc">Rentang nominal: 295.0 – 304.5 K</div>
+              </div>
+
+              <div class="param-cell">
+                <div class="param-label-row">
+                  <label for="process_temperature" class="param-label">Suhu Proses Internal</label>
+                  <span class="param-unit">[KELVIN]</span>
+                </div>
+                <div class="param-input-box">
+                  <input type="number" id="process_temperature" step="any" min="250" max="360" value="309.2" required />
+                  <span class="param-affix">K</span>
+                </div>
+                <div class="param-desc">Rentang nominal: 305.0 – 314.0 K</div>
+              </div>
+            </div>
+
+            <!-- Row 3: Kinematics & Torque -->
+            <div class="param-row">
+              <div class="param-cell">
+                <div class="param-label-row">
+                  <label for="rotational_speed" class="param-label">Kecepatan Putar Spindel</label>
+                  <span class="param-unit">[RPM]</span>
+                </div>
+                <div class="param-input-box">
+                  <input type="number" id="rotational_speed" step="any" min="500" max="3500" value="1450" required />
+                  <span class="param-affix">RPM</span>
+                </div>
+                <div class="param-desc">Kecepatan rotasi angular poros</div>
+              </div>
+
+              <div class="param-cell">
+                <div class="param-label-row">
+                  <label for="torque" class="param-label">Beban Torsi Spindel</label>
+                  <span class="param-unit">[NM]</span>
+                </div>
+                <div class="param-input-box">
+                  <input type="number" id="torque" step="any" min="0" max="150" value="45.0" required />
+                  <span class="param-affix">Nm</span>
+                </div>
+                <div class="param-desc">Torsi mekanis yang ditransmisikan</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Section B: Real-Time Physical Calculus -->
+          <div class="section-marker">
+            <div>
+              <span class="section-code">SEC.B</span>
+              <span class="section-title">Kalkulus Fisika Dinamis (Derivasi Langsung)</span>
+            </div>
+            <span class="section-tag">REALTIME CALCULUS</span>
+          </div>
+
+          <div class="calculus-grid">
+            <div class="calculus-cell">
+              <div class="calc-formula">ΔT = T_PROCESS - T_AIR</div>
+              <div id="statDeltaT" class="calc-value">10.70 K</div>
+              <div class="calc-note">Disipasi termal kritis bila selisih &lt; 8.60 K</div>
+            </div>
+
+            <div class="calculus-cell">
+              <div class="calc-formula">DAYA ESTIMASI (P = τ × ω)</div>
+              <div id="statEstPower" class="calc-value">6,833 W</div>
+              <div class="calc-note">Kalkulasi daya mekanis poros spindel</div>
+            </div>
+          </div>
+
+          <!-- Action Strip -->
+          <div class="action-strip">
+            <button type="submit" class="btn-execute" id="btnSubmit">
+              <span>EKSEKUSI INFERENSI MODEL &rarr;</span>
+            </button>
+            <button type="button" class="btn-wireframe" id="btnReset">
+              RESET PARAMETER
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- RIGHT COLUMN: DIAGNOSTIC EVALUATION MATRIX -->
+      <section class="grid-column-right">
+
+        <!-- Section C: Diagnostic Verdict -->
+        <div class="section-marker">
+          <div>
+            <span class="section-code">SEC.C</span>
+            <span class="section-title">Hasil Evaluasi Diagnostik Model</span>
+          </div>
+          <span class="section-tag">OUTPUT VERDICT</span>
+        </div>
+
+        <div id="statusBox" class="verdict-box standby">
+          <div id="statusPill" class="verdict-code">VERDICT_CODE: 0x00 // STANDBY</div>
+          <h2 id="statusHeadline" class="verdict-headline">MENUNGGU PARAMETER PENGUJIAN</h2>
+          <p id="statusDescription" class="verdict-text">
+            Masukkan nilai pengukuran sensor di panel kiri atau pilih salah satu konfigurasi matriks uji, kemudian klik <strong>"EKSEKUSI INFERENSI MODEL"</strong>.
+          </p>
+        </div>
+
+        <!-- Section D: Quantitative Metrics -->
+        <div class="section-marker">
+          <div>
+            <span class="section-code">SEC.D</span>
+            <span class="section-title">Metrik Densitas Risiko & Latensi Komputasi</span>
+          </div>
+          <span class="section-tag">RISK DENSITY</span>
+        </div>
+
+        <div class="metric-row">
+          <div class="metric-cell">
+            <div class="metric-hdr">Probabilitas Risiko Kegagalan (Failure Risk)</div>
+            <div id="riskPercentVal" class="metric-big">0.00%</div>
+            <div class="metric-sub">Ambang batas klasifikasi biner: 50.00%</div>
+            <div class="util-bar-track">
+              <div id="riskProgressBar" class="util-bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="metric-cell">
+            <div class="metric-hdr">Latensi Inferensi API (Round-Trip)</div>
+            <div id="latencyReadout" class="metric-big">-</div>
+            <div class="metric-sub">Waktu transmisi HTTP + Z-Score scaling + XGBoost</div>
+          </div>
+        </div>
+
+        <!-- Section E: Feature Vector Snapshot -->
+        <div class="section-marker">
+          <div>
+            <span class="section-code">SEC.E</span>
+            <span class="section-title">Snapshot Vektor Fitur Inferensi Terakhir</span>
+          </div>
+          <span class="section-tag">FEATURE VECTOR</span>
+        </div>
+
+        <table class="feature-sheet-table">
+          <thead>
+            <tr>
+              <th>Variabel Fitur</th>
+              <th>Nilai Telemetri</th>
+              <th>Variabel Fitur</th>
+              <th>Nilai Telemetri</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kualitas Produk (Type)</td>
+              <td id="teleType" class="numeric">L</td>
+              <td>Tool Wear (Keausan Pahat)</td>
+              <td id="teleToolWear" class="numeric">105 min</td>
+            </tr>
+            <tr>
+              <td>Suhu Udara Sekitar</td>
+              <td id="teleAirTemp" class="numeric">298.5 K</td>
+              <td>Suhu Proses Operasi</td>
+              <td id="teleProcTemp" class="numeric">309.2 K</td>
+            </tr>
+            <tr>
+              <td>Gradien Suhu (ΔT)</td>
+              <td id="teleDeltaT" class="numeric">10.70 K</td>
+              <td>Daya Mekanis Terestimasi</td>
+              <td id="telePower" class="numeric">6,833 W</td>
+            </tr>
+            <tr>
+              <td>Kecepatan Putar (RPM)</td>
+              <td id="teleRotSpeed" class="numeric">1450 RPM</td>
+              <td>Torsi Spindel (Torque)</td>
+              <td id="teleTorque" class="numeric">45.0 Nm</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Section F: Directive -->
+        <div class="section-marker">
+          <div>
+            <span class="section-code">SEC.F</span>
+            <span class="section-title">Direktif Tindakan Operasional Mesin</span>
+          </div>
+          <span class="section-tag">DIRECTIVE</span>
+        </div>
+
+        <div id="directiveContainer" class="operator-directive">
+          <div class="directive-hdr">Rekomendasi Teknisi Lapangan:</div>
+          <div id="actionDirectiveText" class="directive-body">
+            Instruksi operasional spesifik akan dipetakan secara otomatis setelah hasil inferensi model selesai dikalkulasi.
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- AUDIT TRAIL: Dense Historical Telemetry Record -->
+    <section class="audit-log-section">
+      <div class="audit-toolbar">
+        <div>
+          <span class="section-code">LOG.01</span>
+          <span class="section-title">Riwayat Log Diagnosa Telemetri (Audit Trail)</span>
+        </div>
+        <div class="audit-actions">
+          <button type="button" class="btn-audit" id="btnExportHistory">EKSPOR CSV</button>
+          <button type="button" class="btn-audit" id="btnClearHistory">HAPUS LOG</button>
+        </div>
+      </div>
+
+      <div class="audit-table-wrapper">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th>Stempel Waktu</th>
+              <th>Tipe</th>
+              <th>Kecepatan (RPM)</th>
+              <th>Torsi (Nm)</th>
+              <th>Tool Wear</th>
+              <th>Probabilitas</th>
+              <th>Hasil Status</th>
+              <th>Latensi</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr>
+              <td colspan="8" style="text-align: center; color: var(--zinc-500); padding: 14px;">
+                Belum ada entri log pengujian yang tercatat.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

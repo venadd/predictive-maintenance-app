@@ -1,0 +1,771 @@
+/* ==========================================================================
+   MODERN UTILITARIAN / SWISS INTERNATIONAL TYPOGRAPHIC STYLE
+   Design System:
+   - Strict 0px Radius (rounded-none throughout)
+   - Hairline 1px Precision Grid Borders (Zinc-200 / Zinc-900)
+   - Monochromatic Base + Burnt Industrial Orange Accent
+   - Two Standard System Fonts ('Segoe UI' & 'Consolas')
+   - Rapid 120ms Micro-transitions (No bounce / no float)
+   ========================================================================== */
+
+:root {
+  /* Swiss Monochromatic Palette */
+  --zinc-50:  #FAFAFA;
+  --zinc-100: #F4F4F5;
+  --zinc-200: #E4E4E7;
+  --zinc-300: #D4D4D8;
+  --zinc-400: #A1A1AA;
+  --zinc-500: #71717A;
+  --zinc-600: #52525B;
+  --zinc-700: #3F3F46;
+  --zinc-800: #27272A;
+  --zinc-900: #18181B;
+  --zinc-950: #09090B;
+
+  /* Surfaces & Canvas */
+  --bg-canvas: #F4F4F5;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subtle: #F9F9FA;
+  --border-grid: #E4E4E7;
+  --border-grid-dark: #18181B;
+  --border-grid-strong: #A1A1AA;
+
+  /* Text Hierarchy */
+  --text-primary: #09090B;
+  --text-secondary: #3F3F46;
+  --text-muted: #71717A;
+  --text-inverted: #FAFAFA;
+
+  /* 1 Functional Accent: Burnt Industrial Orange */
+  --accent-orange: #C2410C;
+  --accent-orange-hover: #9A3412;
+  --accent-orange-light: #FFEDD5;
+  --accent-orange-border: #FDBA74;
+
+  /* Functional Status Signals */
+  --status-normal-text: #166534;
+  --status-normal-bg: #F0FDF4;
+  --status-normal-border: #86EFAC;
+  --status-normal-bar: #15803D;
+
+  --status-danger-text: #991B1B;
+  --status-danger-bg: #FEF2F2;
+  --status-danger-border: #FCA5A5;
+  --status-danger-bar: #DC2626;
+
+  /* Two Standard System Fonts */
+  --font-sans: 'Segoe UI', -apple-system, Arial, sans-serif;
+  --font-mono: 'Consolas', 'Courier New', monospace;
+
+  /* Strict Geometry: 0px Radius Everywhere */
+  --radius-none: 0px;
+
+  /* Micro-transitions */
+  --transition-fast: 120ms ease-out;
+}
+
+/* Reset & Utilitarian Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important; /* Strict Swiss 0px radius */
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Monospace Utility */
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* Master Layout Container */
+.app-wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  border-left: 1px solid var(--border-grid);
+  border-right: 1px solid var(--border-grid);
+  background-color: var(--bg-surface);
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+   HEADER / MASTHEAD GRID (Swiss Architectural Style)
+   ========================================================================== */
+.masthead-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  border-bottom: 2px solid var(--border-grid-dark);
+  background-color: var(--zinc-950);
+  color: var(--text-inverted);
+}
+
+.masthead-cell {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--zinc-800);
+}
+
+.masthead-cell:last-child {
+  border-right: none;
+}
+
+.system-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-orange);
+  letter-spacing: 0.1em;
+}
+
+.masthead-title-group {
+  padding: 14px 24px;
+}
+
+.masthead-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.masthead-specs {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--zinc-400);
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+}
+
+.masthead-status-cell {
+  padding: 14px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  background-color: var(--zinc-900);
+}
+
+.status-indicator-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: #10B981;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #10B981;
+}
+
+.status-indicator-tag.error {
+  color: #EF4444;
+}
+
+.status-indicator-tag.error .status-dot {
+  background-color: #EF4444;
+}
+
+/* ==========================================================================
+   PRESET SELECTOR ROW (Modular Segmented Matrix)
+   ========================================================================== */
+.preset-matrix {
+  display: grid;
+  grid-template-columns: 180px repeat(4, 1fr);
+  border-bottom: 1px solid var(--border-grid);
+  background-color: var(--bg-surface-subtle);
+}
+
+.preset-matrix-label {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--zinc-500);
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--border-grid);
+  background-color: var(--zinc-100);
+}
+
+.preset-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-grid);
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--zinc-700);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.preset-btn:last-child {
+  border-right: none;
+}
+
+.preset-btn:hover {
+  background-color: var(--zinc-200);
+  color: var(--zinc-950);
+}
+
+.preset-btn.active {
+  background-color: var(--zinc-950);
+  color: #FFFFFF;
+}
+
+.preset-btn.active .preset-num {
+  color: var(--accent-orange);
+}
+
+.preset-num {
+  font-size: 10px;
+  color: var(--zinc-500);
+}
+
+/* ==========================================================================
+   CORE WORKSPACE GRID (Left Input Matrix / Right Diagnostic Engine)
+   ========================================================================== */
+.core-grid {
+  display: grid;
+  grid-template-columns: 580px 1fr;
+  border-bottom: 1px solid var(--border-grid);
+}
+
+@media (max-width: 1100px) {
+  .core-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid-column-left {
+  border-right: 1px solid var(--border-grid);
+}
+
+/* Section Header (Swiss Rigid Divider) */
+.section-marker {
+  padding: 10px 18px;
+  background-color: var(--zinc-100);
+  border-bottom: 1px solid var(--border-grid);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-orange);
+  letter-spacing: 0.05em;
+  margin-right: 8px;
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zinc-900);
+}
+
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--zinc-500);
+}
+
+/* Tabular Parameter Form */
+.param-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.param-row {
+  border-bottom: 1px solid var(--border-grid);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.param-cell {
+  padding: 14px 18px;
+  border-right: 1px solid var(--border-grid);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.param-cell:last-child {
+  border-right: none;
+}
+
+.param-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.param-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--zinc-800);
+}
+
+.param-unit {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--zinc-500);
+}
+
+.param-input-box {
+  display: flex;
+  border: 1px solid var(--border-grid-strong);
+  background-color: #FFFFFF;
+  transition: border-color var(--transition-fast);
+}
+
+.param-input-box:focus-within {
+  border-color: var(--zinc-950);
+  box-shadow: 0 0 0 1px var(--zinc-950);
+}
+
+.param-input-box input,
+.param-input-box select {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--zinc-900);
+  outline: none;
+}
+
+.param-input-box select {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.param-affix {
+  padding: 8px 10px;
+  background-color: var(--zinc-100);
+  border-left: 1px solid var(--border-grid);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--zinc-500);
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+.param-desc {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--zinc-500);
+  margin-top: 4px;
+}
+
+/* Derived Calculus Matrix */
+.calculus-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--border-grid);
+}
+
+.calculus-cell {
+  padding: 14px 18px;
+  border-right: 1px solid var(--border-grid);
+  background-color: var(--bg-surface-subtle);
+}
+
+.calculus-cell:last-child {
+  border-right: none;
+}
+
+.calc-formula {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--zinc-500);
+  text-transform: uppercase;
+}
+
+.calc-value {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--zinc-950);
+  margin: 4px 0 2px 0;
+}
+
+.calc-note {
+  font-size: 10.5px;
+  color: var(--zinc-500);
+}
+
+/* Execution Action Block */
+.action-strip {
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 12px;
+  background-color: #FFFFFF;
+}
+
+.btn-execute {
+  background-color: var(--zinc-950);
+  color: #FFFFFF;
+  border: 1px solid var(--zinc-950);
+  padding: 12px 18px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn-execute:hover:not(:disabled) {
+  background-color: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
+.btn-execute:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-wireframe {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-grid-strong);
+  color: var(--zinc-800);
+  padding: 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-wireframe:hover {
+  background-color: var(--zinc-100);
+  color: var(--zinc-950);
+}
+
+/* ==========================================================================
+   RIGHT COLUMN: DIAGNOSTIC EVALUATION MATRIX
+   ========================================================================== */
+.verdict-box {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-grid);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.verdict-box.standby {
+  background-color: var(--zinc-50);
+}
+
+.verdict-box.nominal {
+  background-color: var(--status-normal-bg);
+  border-left: 6px solid var(--status-normal-bar);
+}
+
+.verdict-box.critical {
+  background-color: var(--status-danger-bg);
+  border-left: 6px solid var(--status-danger-bar);
+}
+
+.verdict-code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zinc-500);
+  margin-bottom: 4px;
+}
+
+.verdict-headline {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--zinc-950);
+}
+
+.verdict-box.nominal .verdict-headline {
+  color: var(--status-normal-text);
+}
+
+.verdict-box.critical .verdict-headline {
+  color: var(--status-danger-text);
+}
+
+.verdict-text {
+  font-size: 12.5px;
+  color: var(--zinc-700);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* Metric Density Grid (Probability & Latency) */
+.metric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--border-grid);
+}
+
+.metric-cell {
+  padding: 16px 20px;
+  border-right: 1px solid var(--border-grid);
+}
+
+.metric-cell:last-child {
+  border-right: none;
+}
+
+.metric-hdr {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--zinc-500);
+}
+
+.metric-big {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--zinc-950);
+  margin: 6px 0 2px 0;
+}
+
+.metric-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--zinc-500);
+}
+
+/* Utilitarian Progress Track (0px radius) */
+.util-bar-track {
+  width: 100%;
+  height: 6px;
+  background-color: var(--zinc-200);
+  margin-top: 8px;
+}
+
+.util-bar-fill {
+  height: 100%;
+  width: 0%;
+  background-color: var(--status-normal-bar);
+  transition: width var(--transition-fast), background-color var(--transition-fast);
+}
+
+.util-bar-fill.danger {
+  background-color: var(--status-danger-bar);
+}
+
+.util-bar-fill.warning {
+  background-color: var(--accent-orange);
+}
+
+/* Feature Vector Inspection Table */
+.feature-sheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  border-bottom: 1px solid var(--border-grid);
+}
+
+.feature-sheet-table th {
+  background-color: var(--zinc-100);
+  padding: 8px 16px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--zinc-600);
+  border-bottom: 1px solid var(--border-grid);
+}
+
+.feature-sheet-table td {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border-grid);
+  color: var(--zinc-800);
+}
+
+.feature-sheet-table tr:last-child td {
+  border-bottom: none;
+}
+
+.feature-sheet-table td.numeric {
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+/* Operator Directive Card */
+.operator-directive {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-grid);
+  background-color: var(--zinc-50);
+}
+
+.operator-directive.alert-state {
+  background-color: #FFF9F9;
+  border-left: 4px solid var(--status-danger-bar);
+}
+
+.directive-hdr {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--zinc-900);
+  margin-bottom: 4px;
+}
+
+.directive-body {
+  font-size: 12px;
+  color: var(--zinc-700);
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   AUDIT LOG GRID (Dense Historical Telemetry Record)
+   ========================================================================== */
+.audit-log-section {
+  background-color: #FFFFFF;
+}
+
+.audit-toolbar {
+  padding: 10px 18px;
+  background-color: var(--zinc-100);
+  border-bottom: 1px solid var(--border-grid);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.audit-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-audit {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-grid-strong);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--zinc-800);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-audit:hover {
+  background-color: var(--zinc-950);
+  color: #FFFFFF;
+  border-color: var(--zinc-950);
+}
+
+.audit-table-wrapper {
+  overflow-x: auto;
+}
+
+.audit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.audit-table th {
+  background-color: var(--zinc-50);
+  padding: 8px 16px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--zinc-500);
+  border-bottom: 1px solid var(--border-grid);
+}
+
+.audit-table td {
+  padding: 7px 16px;
+  border-bottom: 1px solid var(--border-grid);
+  color: var(--zinc-700);
+}
+
+.audit-table tr:hover td {
+  background-color: var(--zinc-50);
+}
+
+.tag-status {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 4px;
+}
+
+.tag-status.ok {
+  background-color: var(--status-normal-bg);
+  color: var(--status-normal-text);
+  border: 1px solid var(--status-normal-border);
+}
+
+.tag-status.fail {
+  background-color: var(--status-danger-bg);
+  color: var(--status-danger-text);
+  border: 1px solid var(--status-danger-border);
+}
+
+/* Spinner indicator */
+.spinner-box {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #FFFFFF;
+  animation: spin 600ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
