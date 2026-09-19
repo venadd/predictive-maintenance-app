@@ -136,9 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // Periodic API Health Ping
 async function checkApiHealth() {
   try {
-    const res = await fetch('http://127.0.0.1:8000/docs', { method: 'HEAD', mode: 'no-cors' });
+    const res = await fetch(HEALTH_ENDPOINT, { method: 'HEAD', mode: 'no-cors' });
     apiBadge.classList.remove('error');
-    apiStatusText.textContent = 'API: ONLINE (127.0.0.1:8000)';
+    apiStatusText.textContent = 'API: ONLINE (RENDER)';
   } catch (err) {
     apiBadge.classList.add('error');
     apiStatusText.textContent = 'API: OFFLINE';
@@ -215,7 +215,7 @@ async function handleFormSubmit(e) {
 
     const result = await response.json();
     apiBadge.classList.remove('error');
-    apiStatusText.textContent = 'API: ONLINE [127.0.0.1:8000]';
+    apiStatusText.textContent = 'API: ONLINE [RENDER]';
 
     displayInferenceResults(payload, result, elapsedMs);
     recordAuditEntry(payload, result, elapsedMs);
@@ -228,7 +228,7 @@ async function handleFormSubmit(e) {
     statusBox.className = 'verdict-box critical';
     statusPill.textContent = 'VERDICT_CODE: 0xFF // CONNECTION_ERROR';
     statusHeadline.textContent = 'GAGAL MENGHUBUNGI SERVER';
-    statusDescription.textContent = `Kesalahan transmisi: ${err.message}. Pastikan layanan FastAPI berjalan aktif pada port 8000.`;
+    statusDescription.textContent = `Kesalahan transmisi: ${err.message}. Pastikan layanan FastAPI berjalan aktif di Render.`;
   } finally {
     btnSubmit.disabled = false;
     btnSubmit.innerHTML = `<span>EKSEKUSI INFERENSI MODEL &rarr;</span>`;
