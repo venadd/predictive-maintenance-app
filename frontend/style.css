@@ -256,6 +256,10 @@ body {
   .core-grid {
     grid-template-columns: 1fr;
   }
+  .grid-column-left {
+    border-right: none;
+    border-bottom: 2px solid var(--border-grid-dark);
+  }
 }
 
 .grid-column-left {
@@ -769,3 +773,304 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT & MULTI-DEVICE OPTIMIZATIONS
+   Standard breakpoints:
+   - 1024px: Small Desktop / Laptops / Tablets Landscape
+   - 860px:  Tablets Portrait / Phablets
+   - 640px:  Mobile Devices / Smartphones
+   - 400px:  Compact / Narrow Mobile Screens
+   ========================================================================== */
+
+/* Responsive Wrappers for Data Tables */
+.feature-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.feature-sheet-table {
+  min-width: 520px;
+}
+
+.audit-table-wrapper::-webkit-scrollbar,
+.feature-table-wrapper::-webkit-scrollbar {
+  height: 5px;
+}
+
+.audit-table-wrapper::-webkit-scrollbar-track,
+.feature-table-wrapper::-webkit-scrollbar-track {
+  background: var(--zinc-100);
+}
+
+.audit-table-wrapper::-webkit-scrollbar-thumb,
+.feature-table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--zinc-400);
+}
+
+/* --------------------------------------------------------------------------
+   BREAKPOINT: 1024px (Tablets Landscape / Medium Screens)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .preset-matrix {
+    grid-template-columns: 140px repeat(4, 1fr);
+  }
+
+  .preset-btn {
+    padding: 10px 8px;
+    font-size: 10.5px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   BREAKPOINT: 860px (Tablets / Phablets)
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .masthead-grid {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "index status"
+      "title title";
+  }
+
+  .masthead-cell:first-child {
+    grid-area: index;
+    border-right: none;
+    padding: 10px 16px;
+  }
+
+  .masthead-status-cell {
+    grid-area: status;
+    border-left: 1px solid var(--zinc-800);
+    padding: 10px 16px;
+    align-items: flex-end;
+  }
+
+  .masthead-title-group {
+    grid-area: title;
+    border-top: 1px solid var(--zinc-800);
+    padding: 12px 16px;
+  }
+
+  .masthead-title {
+    font-size: 16px;
+  }
+
+  /* Transform Presets to 2x2 grid */
+  .preset-matrix {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .preset-matrix-label {
+    grid-column: 1 / -1;
+    border-right: none;
+    border-bottom: 1px solid var(--border-grid);
+    padding: 8px 16px;
+  }
+
+  .preset-btn {
+    border-bottom: 1px solid var(--border-grid);
+    padding: 12px 14px;
+    font-size: 11px;
+  }
+
+  .preset-btn:nth-child(2),
+  .preset-btn:nth-child(4) {
+    border-right: 1px solid var(--border-grid);
+  }
+
+  .preset-btn:nth-child(3),
+  .preset-btn:nth-child(5) {
+    border-right: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   BREAKPOINT: 640px (Mobile Devices / Smartphones)
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .app-wrapper {
+    border-left: none;
+    border-right: none;
+  }
+
+  /* Header adjustments */
+  .masthead-title {
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+
+  .masthead-specs {
+    font-size: 9.5px;
+    line-height: 1.5;
+  }
+
+  /* Presets on Mobile: Full width buttons for easy tap */
+  .preset-matrix {
+    grid-template-columns: 1fr;
+  }
+
+  .preset-btn {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-grid);
+    padding: 12px 16px;
+    min-height: 44px;
+  }
+
+  /* Form parameters: Stack into single column */
+  .param-row {
+    grid-template-columns: 1fr;
+  }
+
+  .param-cell {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-grid);
+    padding: 12px 16px;
+  }
+
+  .param-label {
+    font-size: 11.5px;
+  }
+
+  .param-input-box {
+    min-height: 42px;
+  }
+
+  .param-input-box input,
+  .param-input-box select {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .param-affix {
+    padding: 0 12px;
+    font-size: 12px;
+  }
+
+  /* Real-time Physical Calculus: Stack */
+  .calculus-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calculus-cell {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-grid);
+    padding: 12px 16px;
+  }
+
+  .calc-value {
+    font-size: 22px;
+  }
+
+  /* Action Strip: Stack Execute and Reset buttons */
+  .action-strip {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .btn-execute {
+    min-height: 46px;
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .btn-wireframe {
+    min-height: 42px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Diagnostic Evaluation on Mobile */
+  .verdict-box {
+    padding: 16px;
+  }
+
+  .verdict-headline {
+    font-size: 17px;
+    line-height: 1.25;
+  }
+
+  .verdict-text {
+    font-size: 12px;
+  }
+
+  /* Quantitative Metrics: Stack */
+  .metric-row {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-cell {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-grid);
+    padding: 14px 16px;
+  }
+
+  .metric-big {
+    font-size: 28px;
+  }
+
+  /* Operator Directive */
+  .operator-directive {
+    padding: 14px 16px;
+  }
+
+  /* Audit Log Toolbar */
+  .audit-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .audit-actions {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .btn-audit {
+    flex: 1;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   BREAKPOINT: 400px (Very Small Mobile Screens)
+   -------------------------------------------------------------------------- */
+@media (max-width: 400px) {
+  .masthead-cell:first-child {
+    padding: 8px 12px;
+  }
+
+  .masthead-title-group {
+    padding: 10px 12px;
+  }
+
+  .masthead-status-cell {
+    padding: 8px 12px;
+  }
+
+  .masthead-title {
+    font-size: 14px;
+  }
+
+  .section-marker {
+    padding: 8px 12px;
+  }
+
+  .param-cell,
+  .calculus-cell,
+  .verdict-box,
+  .metric-cell,
+  .operator-directive,
+  .action-strip {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
