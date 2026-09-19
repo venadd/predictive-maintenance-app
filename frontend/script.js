@@ -3,8 +3,8 @@
  * Telemetry calculation, Model inference caller, and Audit logger
  */
 
-const API_ENDPOINT = 'http://127.0.0.1:8000/predict';
-const HEALTH_ENDPOINT = 'http://127.0.0.1:8000/docs';
+const API_ENDPOINT = 'https://predictive-maintenance-app-rqps.onrender.com/';
+const HEALTH_ENDPOINT = 'https://predictive-maintenance-app-rqps.onrender.com/';
 
 // Preset configurations for industrial baseline & failure modes
 const BENCHMARK_PRESETS = {
@@ -287,7 +287,7 @@ function resetEvaluationView() {
   statusPill.textContent = 'VERDICT_CODE: 0x00 // STANDBY';
   statusHeadline.textContent = 'MENUNGGU PARAMETER PENGUJIAN';
   statusDescription.textContent = 'Masukkan nilai pengukuran sensor di panel kiri atau pilih salah satu konfigurasi matriks uji, kemudian klik "EKSEKUSI INFERENSI MODEL".';
-  
+
   riskPercentVal.textContent = '0.00%';
   riskProgressBar.style.width = '0%';
   riskProgressBar.className = 'util-bar-fill';
@@ -301,7 +301,7 @@ function resetEvaluationView() {
 function recordAuditEntry(payload, result, elapsedMs) {
   const isFailure = (result.prediction === 1 || result.failure_prediction === 1);
   const prob = (result.failure_probability !== undefined) ? (result.failure_probability * 100).toFixed(2) : '0.00';
-  
+
   const now = new Date();
   const timeStr = now.toTimeString().split(' ')[0] + '.' + String(now.getMilliseconds()).padStart(3, '0');
 
@@ -321,7 +321,7 @@ function recordAuditEntry(payload, result, elapsedMs) {
 
   try {
     localStorage.setItem('pm_audit_history', JSON.stringify(auditHistory));
-  } catch (e) {}
+  } catch (e) { }
 
   renderHistoryTable();
 }
@@ -353,7 +353,7 @@ function clearAuditHistory() {
     auditHistory = [];
     try {
       localStorage.removeItem('pm_audit_history');
-    } catch (e) {}
+    } catch (e) { }
     renderHistoryTable();
   }
 }
@@ -380,7 +380,7 @@ function exportAuditCsv() {
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement('a');
   link.setAttribute('href', encodedUri);
-  link.setAttribute('download', `pm_telemetry_audit_${new Date().toISOString().slice(0,10)}.csv`);
+  link.setAttribute('download', `pm_telemetry_audit_${new Date().toISOString().slice(0, 10)}.csv`);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
