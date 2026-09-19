@@ -3,8 +3,8 @@
  * Telemetry calculation, Model inference caller, and Audit logger
  */
 
-const API_ENDPOINT = 'https://predictive-maintenance-app-rqps.onrender.com/';
-const HEALTH_ENDPOINT = 'https://predictive-maintenance-app-rqps.onrender.com/';
+const API_ENDPOINT = 'https://predictive-maintenance-app-rqps.onrender.com/predict';
+const HEALTH_ENDPOINT = 'https://predictive-maintenance-app-rqps.onrender.com/docs';
 
 // Preset configurations for industrial baseline & failure modes
 const BENCHMARK_PRESETS = {
